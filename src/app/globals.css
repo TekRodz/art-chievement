@@ -578,3 +578,11 @@ input, textarea {
   color: #5a8a5a;
   margin-top: 0.5rem;
 }
+
+/* Gallery Grid */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 2rem 0;
+}

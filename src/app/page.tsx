@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { fetchMuseesFromVille, MUSEES, DOMAINES } from '@/lib/joconde'
+import { fetchMuseesFromVille, MUSEES } from '@/lib/joconde'
 import { SearchableMuseums } from '@/components/SearchableMuseums'
 
 interface MuseumWithCategory {
@@ -13,9 +13,9 @@ export default async function HomePage() {
     museumsList = MUSEES.map(m => m.label)
   }
 
-  const musees: MuseumWithCategory[] = museumsList.map((name, index) => ({
+  const musees: MuseumWithCategory[] = museumsList.map((name) => ({
     name,
-    category: DOMAINES[index % DOMAINES.length],
+    category: '', // catégorie non utilisée
   }))
 
   const totalWorks = Math.floor(musees.length * 312000 / 3)
