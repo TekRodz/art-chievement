@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vestibule
 
-## Getting Started
+Explorez les collections du musée du Louvre, issues de la base Joconde du ministère de la Culture.
 
-First, run the development server:
+## Lancer en local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvre http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Déployer sur Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Crée un compte sur [vercel.com](https://vercel.com)
+2. Installe la CLI : `npm i -g vercel`
+3. Dans le dossier du projet : `vercel`
+4. Suis les instructions — framework détecté automatiquement (Next.js)
 
-## Learn More
+Ou depuis l'interface Vercel : importe le repo GitHub directement.
 
-To learn more about Next.js, take a look at the following resources:
+## Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/
+    page.tsx              # Galerie (page d'accueil)
+    oeuvre/[reference]/   # Fiche détail d'une œuvre
+    layout.tsx            # Nav + layout global
+    globals.css           # Styles
+  components/
+    ExplicationEditor.tsx # Éditeur d'explication (client)
+  lib/
+    joconde.ts            # Client API Joconde
+    types.ts              # Types TypeScript
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API utilisée
 
-## Deploy on Vercel
+[Base Joconde](https://data.culture.gouv.fr/explore/dataset/joconde/) — données ouvertes du ministère de la Culture (Licence Ouverte v2.0).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## À venir
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] Stockage des explications en base de données (Supabase)
+- [ ] Système de favoris
+- [ ] Filtre par salle / localisation
+- [ ] Images via la base POP
