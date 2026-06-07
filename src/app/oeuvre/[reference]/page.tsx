@@ -12,8 +12,9 @@ function MetaRow({ label, value }: { label: string; value?: string | null }) {
   )
 }
 
-export default async function OeuvrePage({ params }: { params: { reference: string } }) {
-  const oeuvre = await fetchOeuvre(params.reference)
+export default async function OeuvrePage({ params }: { params: Promise<{ reference: string }> }) {
+  const { reference } = await params
+  const oeuvre = await fetchOeuvre(reference)
   if (!oeuvre) notFound()
 
   const titre = oeuvre.titre || oeuvre.denomination || 'Sans titre'
