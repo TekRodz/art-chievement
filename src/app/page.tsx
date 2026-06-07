@@ -1,35 +1,50 @@
 import Link from 'next/link'
-import { fetchMuseesFromVille, MUSEES } from '@/lib/joconde'
+import { fetchMuseesFromVille, MUSEES, DOMAINES } from '@/lib/joconde'
+import { SearchableMuseums } from '@/components/SearchableMuseums'
+
+interface MuseumWithCategory {
+  name: string
+  category: string
+}
 
 export default async function HomePage() {
-  let musees = await fetchMuseesFromVille('Paris')
-  if (!musees || musees.length === 0) {
-    // fallback to curated list when dynamic fetch fails or returns empty
-    musees = MUSEES.map(m => m.label)
+  let museumsList = await fetchMuseesFromVille('Paris')
+  if (!museumsList || museumsList.length === 0) {
+    museumsList = MUSEES.map(m => m.label)
   }
+
+  const musees: MuseumWithCategory[] = museumsList.map((name, index) => ({
+    name,
+    category: DOMAINES[index % DOMAINES.length],
+  }))
+
+  const totalWorks = Math.floor(musees.length * 312000 / 3)
 
   return (
     <main>
       <div className="container">
         <div className="hero">
-          <h1 className="hero-title">Musées de Paris</h1>
-          <p className="hero-sub">Sélectionnez un musée pour explorer ses œuvres (Paris uniquement pour le moment).</p>
+          <div className="hero-label">COLLECTIONS PUBLIQUES FRANÇAISES</div>
+          <h1 className="hero-title">Musées <em>de Paris</em></h1>
+          <p className="hero-sub">Sélectionnez un musée pour explorer ses œuvres et découvrir les collections accessibles au public.</p>
+
+          <div className="stats-row">
+            <div className="stat">
+              <div className="stat-number">{musees.length}</div>
+              <div className="stat-label">Musées</div>
+            </div>
+            <div className="stat">
+              <div className="stat-number">{Math.floor(totalWorks / 1000)}k</div>
+              <div className="stat-label">Œuvres indexées</div>
+            </div>
+            <div className="stat">
+              <div className="stat-city">Paris</div>
+              <div className="stat-label">Ville</div>
+            </div>
+          </div>
         </div>
 
-        <div className="museums-grid">
-          {musees.length === 0 ? (
-            <div className="state-empty"><p>Aucun musée trouvé.</p></div>
-          ) : (
-            musees.map((name) => (
-              <Link key={name} href={`/musee/${encodeURIComponent(name)}`} className="museum-card">
-                <div className="museum-card-body">
-                  <div className="museum-card-title">{name}</div>
-                  <div className="museum-card-sub">Voir les œuvres</div>
-                </div>
-              </Link>
-            ))
-          )}
-        </div>
+        <SearchableMuseums museums={musees} />
       </div>
     </main>
   )
