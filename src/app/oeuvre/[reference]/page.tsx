@@ -1,5 +1,4 @@
 import { fetchOeuvre, getImageUrl } from '@/lib/joconde'
-import { ExplicationEditor } from '@/components/ExplicationEditor'
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { notFound } from 'next/navigation'
 
@@ -36,6 +35,7 @@ export default async function OeuvrePage({ params }: { params: Promise<{ referen
           museumLabel ? { label: museumLabel, href: `/musee/${encodeURIComponent(museumLabel)}` } : { label: 'Œuvres' },
           { label: titre },
         ]} />
+
         <a href={museumLabel ? `/musee/${encodeURIComponent(museumLabel)}` : '/'} className="detail-back">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M19 12H5M12 5l-7 7 7 7"/>
@@ -43,82 +43,111 @@ export default async function OeuvrePage({ params }: { params: Promise<{ referen
           Retour à la galerie
         </a>
 
-        <div className="detail-pop-link-wrap">
-          <a
-            href={getImageUrl(oeuvre.reference)}
-            target="_blank"
-            rel="noreferrer"
-            className="detail-pop-link"
-          >
-            Voir sur POP →
-          </a>
-        </div>
-
         <div className="detail-layout">
-          <div>
-            <div style={{ marginTop: '1.5rem' }}>
-              <div className="detail-section-label">Métadonnées</div>
-              <div className="meta-list" style={{ marginTop: '0.75rem' }}>
-                <MetaRow label="Référence" value={oeuvre.reference} />
-                <MetaRow label="Numéro d'inventaire" value={oeuvre.numero_inventaire} />
-                <MetaRow label="Localisation" value={oeuvre.localisation || oeuvre.ville} />
-                <MetaRow label="Musée" value={oeuvre.nom_officiel_musee} />
-                <MetaRow label="Dimensions" value={oeuvre.mesures} />
-                <MetaRow label="Statut juridique" value={oeuvre.statut_juridique} />
-              </div>
+          <aside className="detail-sidebar">
+            <div className="detail-pop-link-wrap">
+              <a
+                href={getImageUrl(oeuvre.reference)}
+                target="_blank"
+                rel="noreferrer"
+                className="detail-pop-link"
+              >
+                Voir sur POP
+              </a>
             </div>
-          </div>
 
-          {/* Colonne droite — infos */}
-          <div>
+            <div className="sidebar-section">
+              <div className="sidebar-label">Référence</div>
+              <div className="sidebar-value">{oeuvre.reference}</div>
+            </div>
+
+            <div className="sidebar-section">
+              <div className="sidebar-label">Numéro d'inventaire</div>
+              <div className="sidebar-value">{oeuvre.numero_inventaire || '—'}</div>
+            </div>
+
+            <div className="sidebar-section">
+              <div className="sidebar-label">Localisation</div>
+              <div className="sidebar-value">{oeuvre.localisation || oeuvre.ville || '—'}</div>
+            </div>
+
+            <div className="sidebar-section">
+              <div className="sidebar-label">Musée</div>
+              <div className="sidebar-value">{oeuvre.nom_officiel_musee || '—'}</div>
+            </div>
+
+            <div className="sidebar-divider" />
+
+            <div className="sidebar-section">
+              <div className="sidebar-label">Dimensions</div>
+              <div className="sidebar-value">{oeuvre.mesures || '—'}</div>
+            </div>
+
+            <div className="sidebar-section">
+              <div className="sidebar-label">Statut juridique</div>
+              <div className="sidebar-value">{oeuvre.statut_juridique || '—'}</div>
+            </div>
+          </aside>
+
+          <section className="detail-main">
             {domaine && <div className="detail-domain">{domaine}</div>}
-            <h1 className="detail-title">{titre}</h1>
-            <p className="detail-auteur">
-              {auteur}{periode ? ` · ${periode}` : ''}
+            <h1 className="oeuvre-title">{titre}</h1>
+            <p className="oeuvre-auteur">
+              {auteur}
             </p>
 
-            {materiaux && (
+            {materiaux && oeuvre.materiaux_techniques.length > 0 && (
               <div className="tags">
-                {oeuvre.materiaux_techniques?.map((m) => (
+                {oeuvre.materiaux_techniques.map((m) => (
                   <span key={m} className="tag">{m}</span>
                 ))}
               </div>
             )}
 
-            <div className="detail-divider" />
-
-            {oeuvre.description && (
-              <>
-                <div className="detail-section-label">Description (Joconde)</div>
-                <p className="detail-explication" style={{ marginBottom: '1.5rem', color: 'var(--ink-muted)' }}>
-                  {oeuvre.description}
-                </p>
-                <div className="detail-divider" />
-              </>
+            {periode && (
+              <div className="periode-badge">
+                <span>{periode}</span>
+              </div>
             )}
 
-            <ExplicationEditor reference={oeuvre.reference} initial="" />
+            <div className="divider" />
 
-            {oeuvre.bibliographie && (
-              <>
-                <div className="detail-divider" />
-                <div className="detail-section-label">Bibliographie</div>
-                <p style={{ fontSize: '0.82rem', color: 'var(--ink-muted)', lineHeight: '1.7', marginTop: '0.5rem' }}>
-                  {oeuvre.bibliographie}
-                </p>
-              </>
+            <div className="section-label">Description</div>
+            {oeuvre.commentaires ? (
+              <p className="description-text">{oeuvre.commentaires}</p>
+            ) : (
+              <p className="description-text description-empty">
+                Aucune description disponible depuis l'API.
+              </p>
             )}
 
-            {oeuvre.decouverte_collecte && (
-              <>
-                <div className="detail-divider" />
-                <div className="detail-section-label">Découverte / collecte</div>
-                <p style={{ fontSize: '0.82rem', color: 'var(--ink-muted)', lineHeight: '1.7', marginTop: '0.5rem' }}>
-                  {oeuvre.decouverte_collecte}
-                </p>
-              </>
-            )}
-          </div>
+            <div className="divider" />
+
+            <div className="section-label">Métadonnées complémentaires</div>
+            <div className="meta-grid">
+              {oeuvre.bibliographie ? (
+                <div className="meta-item">
+                  <div className="meta-key">Bibliographie</div>
+                  <div className="meta-val">{oeuvre.bibliographie}</div>
+                </div>
+              ) : null}
+
+              <div className="meta-item">
+                <div className="meta-key">Découverte / collecte</div>
+                <div className="meta-val">{oeuvre.decouverte_collecte || '—'}</div>
+              </div>
+
+              <div className="meta-item">
+                <div className="meta-key">École / pays</div>
+                <div className="meta-val">{oeuvre.ecole_pays || '—'}</div>
+              </div>
+
+              <div className="meta-item">
+                <div className="meta-key">Technique</div>
+                <div className="meta-val">{materiaux || '—'}</div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </main>

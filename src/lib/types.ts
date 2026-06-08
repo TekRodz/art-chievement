@@ -5,6 +5,7 @@ export interface JocondeOeuvre {
   auteur: string | null
   denomination: string | null
   description: string | null
+  commentaires: string | null
   periode_de_creation: string | null
   domaine: string[]
   materiaux_techniques: string[]
