@@ -36,7 +36,7 @@ export default async function OeuvrePage({ params }: { params: Promise<{ referen
           museumLabel ? { label: museumLabel, href: `/musee/${encodeURIComponent(museumLabel)}` } : { label: 'Œuvres' },
           { label: titre },
         ]} />
-        <a href="/" className="detail-back">
+        <a href={museumLabel ? `/musee/${encodeURIComponent(museumLabel)}` : '/'} className="detail-back">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M19 12H5M12 5l-7 7 7 7"/>
           </svg>
