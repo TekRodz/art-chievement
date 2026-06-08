@@ -1,7 +1,10 @@
 import { fetchOeuvre } from '@/lib/joconde'
 import { ExplicationEditor } from '@/components/ExplicationEditor'
+import { OeuvreImage } from '@/components/OeuvreImage'
+import { Breadcrumb } from '@/components/Breadcrumb'
 import { notFound } from 'next/navigation'
 
+// Petite ligne de métadonnée pour la page de détail d'œuvre.
 function MetaRow({ label, value }: { label: string; value?: string | null }) {
   if (!value) return null
   return (
@@ -17,15 +20,23 @@ export default async function OeuvrePage({ params }: { params: Promise<{ referen
   const oeuvre = await fetchOeuvre(reference)
   if (!oeuvre) notFound()
 
+  // Récupération de l'œuvre et préparation des champs pour l'affichage.
+
   const titre = oeuvre.titre || oeuvre.denomination || 'Sans titre'
   const auteur = oeuvre.auteur || 'Auteur inconnu'
   const domaine = oeuvre.domaine?.join(', ') || ''
   const periode = oeuvre.periode_de_creation?.split(';').join(' – ') || ''
   const materiaux = oeuvre.materiaux_techniques?.join(', ') || ''
+  const museumLabel = oeuvre.nom_officiel_musee || ''
 
   return (
     <main>
       <div className="container">
+        <Breadcrumb items={[
+          { label: 'Accueil', href: '/' },
+          museumLabel ? { label: museumLabel, href: `/musee/${encodeURIComponent(museumLabel)}` } : { label: 'Œuvres' },
+          { label: titre },
+        ]} />
         <a href="/" className="detail-back">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M19 12H5M12 5l-7 7 7 7"/>
@@ -36,16 +47,7 @@ export default async function OeuvrePage({ params }: { params: Promise<{ referen
         <div className="detail-layout">
           {/* Colonne gauche — image */}
           <div>
-            <div className="detail-img-wrap">
-              <div className="detail-img-placeholder">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-                  <rect x="3" y="3" width="18" height="18" rx="1"/>
-                  <circle cx="8.5" cy="8.5" r="1.5"/>
-                  <polyline points="21 15 16 10 5 21"/>
-                </svg>
-                <span>Image non disponible</span>
-              </div>
-            </div>
+            <OeuvreImage oeuvre={oeuvre} />
 
             <div style={{ marginTop: '1.5rem' }}>
               <div className="detail-section-label">Métadonnées</div>

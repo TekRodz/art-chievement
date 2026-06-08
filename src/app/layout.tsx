@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 
+// Métadonnées globales de l'application utilisées par Next.js.
 export const metadata: Metadata = {
   title: 'Vestibule — Les œuvres du Louvre',
   description: 'Explorez les collections du musée du Louvre avec des explications humaines.',
@@ -10,6 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr">
       <body>
+        {/* Navigation supérieure affichée sur toutes les pages */}
         <nav className="nav">
           <div className="container nav-inner">
             <a href="/" className="nav-logo">

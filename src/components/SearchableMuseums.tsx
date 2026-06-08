@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 
+// Liste de musées affichée sur la page d'accueil.
 interface MuseumWithCategory {
   name: string
   category: string

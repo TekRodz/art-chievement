@@ -1,7 +1,9 @@
 import { JocondeOeuvre } from './types'
  
+// URL de l'API Joconde utilisée pour interroger les œuvres publiques.
 const BASE_URL = 'https://data.culture.gouv.fr/api/explore/v2.1/catalog/datasets/base-joconde-extrait/records'
  
+// Récupère une page d'œuvres depuis l'API en fonction des filtres fournis.
 export async function fetchOeuvres(params: {
   musee?: string
   domaine?: string
@@ -38,6 +40,7 @@ export async function fetchOeuvres(params: {
 }
 
 export async function fetchMuseesFromVille(ville = 'Paris', limit = 1000): Promise<string[]> {
+  // Récupère les musées d'une ville et retourne une liste de noms.
   const url = new URL(BASE_URL)
   url.searchParams.set('where', `ville like "%${ville}%"`)
   url.searchParams.set('group_by', 'nom_officiel_musee')
@@ -59,6 +62,7 @@ export async function fetchMuseesFromVille(ville = 'Paris', limit = 1000): Promi
 
  
 export async function fetchOeuvre(reference: string): Promise<JocondeOeuvre | null> {
+  // Récupère une œuvre unique à partir de sa référence.
   const url = new URL(BASE_URL)
   url.searchParams.set('where', `reference="${reference}"`)
   url.searchParams.set('limit', '1')
@@ -71,9 +75,11 @@ export async function fetchOeuvre(reference: string): Promise<JocondeOeuvre | nu
 }
  
 export function getImageUrl(reference: string): string {
+  // Génère l'URL de la fiche Joconde pour une référence.
   return `https://www.pop.culture.gouv.fr/notice/joconde/${reference}`
 }
  
+// Liste des domaines disponible pour le filtrage.
 export const DOMAINES = [
   'peinture',
   'sculpture',

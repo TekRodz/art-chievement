@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 
+// Composant client pour enregistrer une explication utilisateur en local.
 export function ExplicationEditor({
   reference,
   initial,
@@ -13,6 +14,7 @@ export function ExplicationEditor({
   const [value, setValue] = useState(initial || (typeof window !== 'undefined' ? localStorage.getItem(key) ?? '' : ''))
   const [saved, setSaved] = useState(false)
 
+  // Enregistre l'explication dans localStorage et affiche une confirmation.
   function handleSave() {
     localStorage.setItem(key, value)
     setSaved(true)

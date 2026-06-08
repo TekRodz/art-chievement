@@ -1,7 +1,8 @@
-import Link from 'next/link'
 import { fetchMuseesFromVille, MUSEES } from '@/lib/joconde'
 import { SearchableMuseums } from '@/components/SearchableMuseums'
+import { Breadcrumb } from '@/components/Breadcrumb'
 
+// Type interne pour représenter un musée et sa catégorie éventuelle.
 interface MuseumWithCategory {
   name: string
   category: string
@@ -20,9 +21,11 @@ export default async function HomePage() {
 
   const totalWorks = Math.floor(musees.length * 312000 / 3)
 
+  // Page d'accueil : affiche le résumé des musées de Paris et la liste cliquable.
   return (
     <main>
       <div className="container">
+        <Breadcrumb items={[{ label: 'Accueil' }]} />
         <div className="hero">
           <div className="hero-label">COLLECTIONS PUBLIQUES FRANÇAISES</div>
           <h1 className="hero-title">Musées <em>de Paris</em></h1>

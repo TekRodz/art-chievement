@@ -1,3 +1,4 @@
+// Modèle de données de l'API Joconde pour une œuvre.
 export interface JocondeOeuvre {
   reference: string
   titre: string | null
@@ -20,8 +21,10 @@ export interface JocondeOeuvre {
   ecole_pays: string | null
   epoque: string | null
   coordonnees: { lon: number; lat: number } | null
+  image_url?: string
 }
 
 export interface OeuvreAvecExplication extends JocondeOeuvre {
+  // Champ local pour stocker une explication utilisateur.
   explication?: string
 }

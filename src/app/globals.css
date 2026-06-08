@@ -176,6 +176,40 @@ input, textarea {
   gap: 1rem;
 }
 
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.breadcrumb a {
+  color: var(--ink-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb a:hover {
+  color: var(--ink);
+}
+
+.breadcrumb-separator {
+  color: var(--ink-faint);
+}
+
+.breadcrumb [aria-current="page"] {
+  color: var(--ink);
+  font-weight: 500;
+}
+
 .search-wrap {
   display: flex;
   align-items: center;
@@ -307,6 +341,7 @@ input, textarea {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
 }
 
 .art-card-img-placeholder {
@@ -315,14 +350,17 @@ input, textarea {
   align-items: center;
   gap: 0.5rem;
   color: var(--ink-faint);
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .art-card-img-placeholder svg { width: 32px; height: 32px; }
 .art-card-img-placeholder span { font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; }
 
-.art-card-body {
-  padding: 1rem 1.25rem 1.25rem;
-  border-top: 1px solid var(--border);
+.art-card-img-image {
+  position: relative !important;
+  z-index: 2;
 }
 
 .art-card-domain {
@@ -389,10 +427,18 @@ input, textarea {
   align-items: center;
   gap: 1rem;
   color: var(--ink-faint);
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .detail-img-placeholder svg { width: 48px; height: 48px; }
 .detail-img-placeholder span { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.detail-img {
+  position: relative !important;
+  z-index: 2;
+}
 
 .detail-domain {
   font-size: 0.7rem;
