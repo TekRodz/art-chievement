@@ -1,6 +1,5 @@
-import { fetchOeuvre } from '@/lib/joconde'
+import { fetchOeuvre, getImageUrl } from '@/lib/joconde'
 import { ExplicationEditor } from '@/components/ExplicationEditor'
-import { OeuvreImage } from '@/components/OeuvreImage'
 import { Breadcrumb } from '@/components/Breadcrumb'
 import { notFound } from 'next/navigation'
 
@@ -44,11 +43,19 @@ export default async function OeuvrePage({ params }: { params: Promise<{ referen
           Retour à la galerie
         </a>
 
-        <div className="detail-layout">
-          {/* Colonne gauche — image */}
-          <div>
-            <OeuvreImage oeuvre={oeuvre} />
+        <div className="detail-pop-link-wrap">
+          <a
+            href={getImageUrl(oeuvre.reference)}
+            target="_blank"
+            rel="noreferrer"
+            className="detail-pop-link"
+          >
+            Voir sur POP →
+          </a>
+        </div>
 
+        <div className="detail-layout">
+          <div>
             <div style={{ marginTop: '1.5rem' }}>
               <div className="detail-section-label">Métadonnées</div>
               <div className="meta-list" style={{ marginTop: '0.75rem' }}>

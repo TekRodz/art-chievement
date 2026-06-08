@@ -13,16 +13,6 @@ export function ArtCard({ oeuvre }: { oeuvre: JocondeOeuvre }) {
 
   return (
     <Link href={`/oeuvre/${oeuvre.reference}`} className="art-card">
-      <div className="art-card-img">
-        <div className="art-card-img-placeholder">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-            <rect x="3" y="3" width="18" height="18" rx="1"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
-          </svg>
-          <span>{domaine}</span>
-        </div>
-      </div>
       <div className="art-card-body">
         {domaine && <div className="art-card-domain">{domaine}</div>}
         <div className="art-card-title">{titre}</div>
